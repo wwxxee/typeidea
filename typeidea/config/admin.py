@@ -2,11 +2,12 @@ from django.contrib import admin
 
 from .models import Link, SideBar
 from typeidea.custom_site import custom_site
+from typeidea.base_admin import BaseOwerAdmin
 # Register your models here.
 
 
 @admin.register(Link, site=custom_site)
-class LinkAdmin(admin.ModelAdmin):
+class LinkAdmin(BaseOwerAdmin):
     list_display = (
         'title', 'href', 'status', 'weight', 'ower', 'create_time',
     )
@@ -14,13 +15,9 @@ class LinkAdmin(admin.ModelAdmin):
         'title', 'href', 'status', 'weight',
     )
 
-    def save_model(self, request, obj, form, change):
-        obj.ower = request.user
-        return super(LinkAdmin, self).save_model(request, obj, form, change)
-
 
 @admin.register(SideBar, site=custom_site)
-class SideBarAdmin(admin.ModelAdmin):
+class SideBarAdmin(BaseOwerAdmin):
     list_display = (
         'title', 'display_type', 'content', 'ower', 'create_time'
     )
@@ -28,6 +25,3 @@ class SideBarAdmin(admin.ModelAdmin):
         'title', 'display_type', 'status', 'content',
     )
 
-    def save_model(self, request, obj, form, change):
-        obj.ower = request.user
-        return super(SideBarAdmin, self).save_model(request, obj, form, change)

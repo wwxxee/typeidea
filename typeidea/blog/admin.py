@@ -5,6 +5,7 @@ from django.utils.html import format_html
 from .models import Post, Category, Tag
 from .adminforms import PostAdminForm
 from typeidea.custom_site import custom_site
+from typeidea.base_admin import BaseOwerAdmin
 
 # Register your models here.
 
@@ -20,7 +21,7 @@ class PostInline(admin.TabularInline):  # StackedInline样式不同
 
 
 @admin.register(Category, site=custom_site)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(BaseOwerAdmin):
     list_display = ('name', 'status', 'is_nav', 'ower', 'post_count', 'create_time')
     fields = ('name', 'status', 'is_nav')
 
@@ -32,27 +33,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
     post_count.short_description = '文章数量'
 
-    def save_model(self, request, obj, form, change):
-        obj.ower = request.user
-        return super(CategoryAdmin, self).save_model(request, obj, form, change)
-
-    def get_queryset(self, request):
-        qs = super(CategoryAdmin, self).get_queryset(request)
-        return qs.filter(ower=request.user)
-
 
 @admin.register(Tag, site=custom_site)
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(BaseOwerAdmin):
     list_display = ('name', 'status', 'ower', 'create_time')
     fields = ('name', 'status')
-
-    def save_model(self, request, obj, form, change):
-        obj.ower = request.user
-        return super(TagAdmin, self).save_model(request, obj, form, change)
-
-    def get_queryset(self, request):
-        qs = super(TagAdmin, self).get_queryset(request)
-        return qs.filter(ower=request.user)
 
 
 class CategoryOwerFilter(admin.SimpleListFilter):
@@ -74,7 +59,7 @@ class CategoryOwerFilter(admin.SimpleListFilter):
 
 
 @admin.register(Post, site=custom_site)
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(BaseOwerAdmin):
 
     form = PostAdminForm
 
@@ -83,7 +68,7 @@ class PostAdmin(admin.ModelAdmin):
         'create_time', 'operator'
     ]
 
-    # 指定哪些字段不展示
+    # 指定哪些字段不展示,list_display比这个优先级高
     # exclude = ['ower']
 
     # 用来配置哪些字段可以作为链接点击，点击可以进入编辑界面，默认第一个可以点击
@@ -149,17 +134,6 @@ class PostAdmin(admin.ModelAdmin):
     # 指定展示文案
     operator.short_description = '操作'
 
-    def save_model(self, request, obj, form, change):
-        obj.ower = request.user
-        return super(PostAdmin, self).save_model(request, obj, form, change)
-
-    """
-    自定义数据列表页，实现让当前用户在列表页中只能看到自己创建的文章
-    """
-    def get_queryset(self, request):
-        qs = super(PostAdmin, self).get_queryset(request)
-        return qs.filter(ower=request.user)
-
     class Media:
         """
         通过自定义Media类来往页面上添加JavaScript和css资源
@@ -168,6 +142,3 @@ class PostAdmin(admin.ModelAdmin):
             'all': ("https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css", ),
         }
         js = ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js', )
-
-
-

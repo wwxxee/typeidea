@@ -23,7 +23,7 @@ class PostInline(admin.TabularInline):  # StackedInline样式不同
 
 @admin.register(Category, site=custom_site)
 class CategoryAdmin(BaseOwerAdmin):
-    list_display = ('name', 'status', 'is_nav', 'ower', 'post_count', 'create_time')
+    list_display = ('id', 'name', 'status', 'is_nav', 'ower', 'post_count', 'create_time')
     fields = ('name', 'status', 'is_nav')
 
     # 在分类管理中添加inliens属性
@@ -65,7 +65,7 @@ class PostAdmin(BaseOwerAdmin):
     form = PostAdminForm
 
     list_display = [
-        'title', 'category', 'status', 'ower',
+        'id', 'title', 'category', 'status', 'ower',
         'create_time', 'operator'
     ]
 

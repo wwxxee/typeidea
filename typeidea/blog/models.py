@@ -71,6 +71,9 @@ class Post(models.Model):
         (STATUS_DRAFT, '草稿'),
     )
 
+    pv = models.PositiveIntegerField(default=1)
+    uv = models.PositiveIntegerField(default=1)
+
     title = models.CharField(max_length=255, verbose_name='标题')
     desc = models.CharField(max_length=1024, blank=True, verbose_name='摘要')
     content = models.TextField(verbose_name='正文', help_text='正文必须为markdown格式')
@@ -115,3 +118,8 @@ class Post(models.Model):
     def latest_posts(cls):
         queryset = cls.objects.filter(status=cls.STATUS_NORMAL)
         return queryset
+
+    @classmethod
+    def host_posts(cls):
+        return cls.objects.filter(status=cls.STATUS_NORMAL).only('id', 'title').order_by('-pv')
+

@@ -1,11 +1,10 @@
 {% extends "./base.html" %}
 
-
 {% block title %}
     {% if tag %}
-    标签页：{{ tag.name }}
+    标签页: {{ tag.name }}
     {% elif category %}
-    分类页：{{ category.name }}
+    分类页: {{ category.name }}
     {% else %}
     首页
     {% endif %}
@@ -13,7 +12,6 @@
 
 
 {% block main %}
-
     {% for post in post_list %}
     <div class="card post">
         <div class="card-body">
@@ -28,10 +26,10 @@
             <hr/>
             <p class="card-text">{{ post.desc }}<a href="{% url 'post-detail' post.id %}">查看全文</a></p>
         </div>
+    </div>
     {% endfor %}
 
-
-{% if page_obj %}
+    {% if page_obj %}
     {% if page_obj.has_previous %}
         <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
     {% endif %}
@@ -39,8 +37,6 @@
     {% if page_obj.has_next %}
         <a href="?page={{ page_obj.next_page_number }}">下一页</a>
     {% endif %}
-{% endif %}
-
-
+    {% endif %}
 
 {% endblock %}

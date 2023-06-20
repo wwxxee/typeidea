@@ -1,6 +1,13 @@
 {% extends "./base.html" %}
-
+{% load static %}
 {% block title %} {{ post.title }} {% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/default.min.css' %}">
+<script src="{% static 'js/highlight.min.js' %}"></script>
+<script>hljs.highlightAll();</script>
+{% endblock %}
+
 
 {% block main %}
     {% if post %}
@@ -12,7 +19,9 @@
     </div>
     <hr>
     <p>
-        {{ post.content }}
+        {% autoescape off %}
+        {{ post.content_html }}
+        {% endautoescape %}
     </p>
     {% endif %}
 
@@ -34,7 +43,9 @@
                 <span>{{ comment.create_time }}</span>
             </div>
             <div class="comment-content">
+                {% autoescape off %}
                 {{ comment.content }}
+                {% endautoescape %}
             </div>
         </li>
         {% endfor %}

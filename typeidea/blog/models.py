@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+import mistune
+from django.utils.functional import cached_property
 
 
 # Create your models here.
@@ -74,6 +76,8 @@ class Post(models.Model):
     pv = models.PositiveIntegerField(default=1)
     uv = models.PositiveIntegerField(default=1)
 
+    content_html = models.TextField(verbose_name="正文html代码", blank=True, editable=False)
+
     title = models.CharField(max_length=255, verbose_name='标题')
     desc = models.CharField(max_length=1024, blank=True, verbose_name='摘要')
     content = models.TextField(verbose_name='正文', help_text='正文必须为markdown格式')
@@ -102,6 +106,10 @@ class Post(models.Model):
 
         return post_list, tag
 
+    @property
+    def tags(self):
+        return ','.join(self.tag.values_list('name', flat=True))
+
     @staticmethod
     def get_by_category(category_id):
         try:
@@ -121,5 +129,9 @@ class Post(models.Model):
 
     @classmethod
     def host_posts(cls):
-        return cls.objects.filter(status=cls.STATUS_NORMAL).only('id', 'title').order_by('-pv')
+        #  此处可限制展示的列表长度
+        return cls.objects.filter(status=cls.STATUS_NORMAL).only('id', 'title').order_by('-pv')[:10]
 
+    def save(self, *args, **kwargs):
+        self.content_html = mistune.markdown(self.content)
+        super().save(*args, **kwargs)

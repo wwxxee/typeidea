@@ -20,6 +20,9 @@ from blog.views import (IndexView, CategoryView, TagView, PostDetailView, Search
 from config.views import LinkListView
 from .custom_site import custom_site
 from comment.views import CommentView
+from django.contrib.sitemaps import views as sitemap_views
+from blog.rss import LatestPostFeed
+from blog.sitemap import PostSitemap
 
 
 urlpatterns = [
@@ -31,6 +34,8 @@ urlpatterns = [
     url(r'^author/(?P<owner_id>\d+)/$', AuthorView.as_view(), name='author'),
     url(r'^links/$', LinkListView.as_view(), name='links'),
     url(r'^comment/$', CommentView.as_view(), name='comment'),
+    url(r'^rss|feed/', LatestPostFeed(), name='rss'),
+    url(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps':{'posts': PostSitemap}}),
 
     url(r'^super_admin/', admin.site.urls, name='super-admin'),
     url(r'^admin/', custom_site.urls, name='admin')

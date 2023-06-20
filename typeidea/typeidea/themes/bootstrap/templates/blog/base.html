@@ -6,6 +6,8 @@
     <title>{% block title %}首页{% endblock %}- Jo Won</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    {% block extra_head %}
+    {% endblock %}
     <style>
     .post {
         margin-bottom: 5px;
@@ -69,7 +71,7 @@
             </nav>
         </div>
         <div class="container power">
-            <span class="text-muted">Power by Typeidea@Jo Won</span>
+            <span class="text-muted">Power by Jo Won@Jo Won</span>
         </div>
         {% endblock %}
     </footer>

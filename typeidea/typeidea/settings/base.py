@@ -31,6 +31,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'xadmin',
+    'crispy_forms',
+
+    'dal',
+    'dal_select2',
+
     'typeidea',
     'blog',
     'config',
@@ -130,3 +136,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'themes', THEME, "static"),
 ]
+
+XADMIN_TITLE = 'JoWon 博客管理后台'
+XADMIN_FOOTER_TITLE = 'power by JoWon'

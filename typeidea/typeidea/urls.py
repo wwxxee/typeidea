@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+import xadmin
 
 from blog.views import (IndexView, CategoryView, TagView, PostDetailView, SearchView, AuthorView)
 from config.views import LinkListView
@@ -23,6 +24,7 @@ from comment.views import CommentView
 from django.contrib.sitemaps import views as sitemap_views
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
+from .autocomplete import CategoryAutocomplete, TagAutocomplete
 
 
 urlpatterns = [
@@ -36,7 +38,9 @@ urlpatterns = [
     url(r'^comment/$', CommentView.as_view(), name='comment'),
     url(r'^rss|feed/', LatestPostFeed(), name='rss'),
     url(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps':{'posts': PostSitemap}}),
+    url(r'^category-autocomplete/$', CategoryAutocomplete.as_view(), name='category-autocomplete'),
+    url(r'^tag-autocomplete/$', TagAutocomplete.as_view(), name='tag-autocomplete'),
 
     url(r'^super_admin/', admin.site.urls, name='super-admin'),
-    url(r'^admin/', custom_site.urls, name='admin')
+    url(r'^admin/', xadmin.site.urls, name='xadmin')
 ]

@@ -121,6 +121,9 @@ class PostAdmin(BaseOwerAdmin):
         Fieldset(
             '内容信息',
             'desc',
+            'is_md',
+            'content_ck',
+            'content_md',
             'content',
         )
     )
@@ -157,12 +160,3 @@ class PostAdmin(BaseOwerAdmin):
 
     # 指定展示文案
     operator.short_description = '操作'
-
-    # class Media:
-    #     """
-    #     通过自定义Media类来往页面上添加JavaScript和css资源
-    #     """
-    #     css = {
-    #         'all': ("https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css", ),
-    #     }
-    #     js = ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js', )

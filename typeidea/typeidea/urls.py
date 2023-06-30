@@ -56,3 +56,6 @@ urlpatterns = [
     # url(r'^super_admin/', admin.site.urls, name='super-admin'),
     url(r'^admin/', xadmin.site.urls, name='xadmin')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]

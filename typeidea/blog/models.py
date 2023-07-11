@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import mistune
-from django.utils.functional import cached_property
+from django.core.cache import cache
 
 
 # Create your models here.
@@ -135,7 +135,11 @@ class Post(models.Model):
     @classmethod
     def host_posts(cls):
         #  此处可限制展示的列表长度
-        return cls.objects.filter(status=cls.STATUS_NORMAL).only('id', 'title').order_by('-pv')[:10]
+        result = cache.get('hot_posts')
+        if not result:
+            result = cls.objects.filter(status=cls.STATUS_NORMAL).only('id', 'title').order_by('-pv')[:10]
+            cache.set('hot_posts', result, 10 * 60)
+        return result
 
     def save(self, *args, **kwargs):
         if self.is_md:

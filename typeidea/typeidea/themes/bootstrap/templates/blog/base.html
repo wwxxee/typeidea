@@ -1,4 +1,5 @@
 {% load static %}
+{% load cache %}
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
@@ -25,6 +26,7 @@
                   <a class="nav-link" href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
               </li>
             {% endfor %}
+                <a class="nav-link" href="/links/">友链</a>
             </ul>
             <form class="form-inline" action='/search/' method="GET">
               <input class="form-control" type="search" name="keyword" placeholder="Search" aria-label="Search" value="{{ keyword }}">
@@ -59,7 +61,7 @@
             </div>
         </div>
     </div>
-
+    {% cache 600 footer %}
     <footer class="footer">
         {% block footer %}
         <div class="container">
@@ -75,5 +77,6 @@
         </div>
         {% endblock %}
     </footer>
+  {% endcache %}
   </body>
 </html>

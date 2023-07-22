@@ -57,7 +57,8 @@ urlpatterns = [
     url(r'api/docs', include_docs_urls(title='JoWon apis')),
 
     # url(r'^super_admin/', admin.site.urls, name='super-admin'),
-    url(r'^admin/', xadmin.site.urls, name='xadmin')
+    url(r'^admin/', xadmin.site.urls, name='xadmin'),
+    url(r'^captcha/', include('captcha.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

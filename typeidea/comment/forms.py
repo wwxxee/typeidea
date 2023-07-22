@@ -1,13 +1,16 @@
 from django import forms
-
+from captcha.fields import CaptchaField
 from .models import Comment
 import mistune
 
 
 class CommentForm(forms.ModelForm):
+
+
+
     nickname = forms.CharField(
         label='昵称',
-        max_length=50,
+        max_length=20,
         widget=forms.widgets.Input(
             attrs={'class': 'form-control', 'style': 'width: 60%;'}
         )
@@ -19,20 +22,23 @@ class CommentForm(forms.ModelForm):
             attrs={'class': 'form-control', 'style': 'width: 60%;'}
         )
     )
-    website = forms.CharField(
-        label='网站',
-        max_length=100,
-        widget=forms.widgets.URLInput(
+    # website = forms.CharField(
+    #     label='网站',
+    #     max_length=25,
+    #     widget=forms.widgets.URLInput(
+    #         attrs={'class': 'form-control', 'style': 'width: 60%;'}
+    #     )
+    # )
+
+    content = forms.CharField(
+        label='内容',
+        max_length=50,
+        widget=forms.widgets.Input(
             attrs={'class': 'form-control', 'style': 'width: 60%;'}
         )
     )
-    content = forms.CharField(
-        label='内容',
-        max_length=100,
-        widget=forms.widgets.Textarea(
-            attrs={'row': 2, 'cols': 30, 'class': 'form-control'}
-        )
-    )
+
+    captcha = CaptchaField(label='请输入验证码：')
 
     def clean_content(self):
         content = self.cleaned_data.get('content')
@@ -44,5 +50,5 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = [
-            'nickname', 'email', 'website', 'content'
+            'nickname', 'email', 'content'
         ]

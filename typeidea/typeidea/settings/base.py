@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
 
     'rest_framework',
+    'captcha',
 
     'typeidea',
     'blog',

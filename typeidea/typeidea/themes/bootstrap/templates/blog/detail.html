@@ -26,11 +26,13 @@
     {% endif %}
 
 <hr/>
+<h5>发表评论</h5>
 <div class="comment">
     <form class="form-group" action="/comment/" method="POST">
         {% csrf_token %}
         <input name="target" type="hidden" value="{{ request.path }}"/>
         {{ comment_form }}
+        <br>
         <input type="submit" value="提交评论"/>
     </form>
 

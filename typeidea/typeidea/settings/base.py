@@ -147,7 +147,7 @@ XADMIN_TITLE = 'JoWon 博客管理后台'
 XADMIN_FOOTER_TITLE = 'power by JoWon'
 
 CKEDITOR_CONFIGS = {
-    'default':{
+    'default': {
         'toolbar': 'full',
         'height': 300,
         'width': 800,

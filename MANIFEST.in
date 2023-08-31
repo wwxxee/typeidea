@@ -1,0 +1,4 @@
+include README.md
+
+# digui finds all files under the format
+recursive-include typeidea *.css *.js *.jpg *.html *.md

@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='jowon',
-    version='0.1',
+    version='${version}',
     description='Blog System base on django',
     author='jowon',
     author_email='',
@@ -24,9 +24,27 @@ setup(
     # 指明依赖版本
     install_requires=[
         'django==1.11.29',
-        '',
+        'django_autocomplete_light==3.2.10',
+        'django_ckeditor==5.4.0',
+        'django-crispy-forms==1.6.1',
+        'django-formtools==2.0',
+        'django-debug-toolbar==1.9.1',
+        'django-import-export==0.6.0',
+        'django-js-asset==1.1.0',
+        'django-reversion==2.0.1',
+        'django-silk==3.0.0',
+        'django-simple-captcha==0.5.5',
+        'djangorestframework==3.8.2',
+        'Fabric3==1.14.post1',
+        'mistune==3.0.1',
+        'Pillow',
+        'PyMySQL==1.1.0',
+        'supervisor==4.2.5',
 
-
+        'coreapi==2.3.3',
+        'httplib2==0.9.2',
+        'six==1.10.0',
+        'gunicorn==19.8.1',
     ],
     # 额外的依赖
     extras_require={

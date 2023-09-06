@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 
 from fabric.api import (
-    env, run, prefix, local, settings, roles
+    env, run, prefix, local, settings, roles, sudo
 )
 
 from fabric.contrib.files import exists, upload_template
@@ -21,6 +21,8 @@ env.PYPI_HOST = '192.168.52.134'
 env.PYPI_INDEX = 'http://192.168.52.134:18080/simple'
 env.PROCESS_COUNT = 2
 env.PORT_PREFIX = 909
+env.sudo_user = 'kali'
+env.password = 'kali'
 
 class _Version:
     origin_record = {}
@@ -84,9 +86,9 @@ def _reload_supervisord(deploy_path, profile):
     }
     upload_template(filename, destination, context=context, use_jinja=True, template_dir=template_dir)
     with settings(warn_only=True):
-        result = run('supervisorctl -c %s/supervisord.conf shutdown' % deploy_path)
+        result = run('supervisorctl -c %ssupervisord.conf shutdown' % deploy_path)
         if result:
-            run('supervisord -c %s/supervisord.conf' % deploy_path)
+            run('supervisord -c %ssupervisord.conf' % deploy_path)
 
 @task
 @roles('internal')
@@ -104,6 +106,7 @@ def deploy(version, profile):
     _ensure_virtualenv()
     package_name = env.PROJECT_NAME + '==' + version
     with prefix('source %s' % env.VENV_ACTIVE):
+        run('pip install --upgrade pip')
         run('pip install %s -i %s --trusted-host %s' % (package_name, env.PYPI_INDEX, env.PYPI_HOST))
         _reload_supervisord(env.DEPLOY_PATH, profile)
-        run('echo yes | %s/bin/manage.py collectstatic' % env.DEPLOY_PATH)
+        sudo('python3 %s/bin/manage.py collectstatic' % env.DEPLOY_PATH)
